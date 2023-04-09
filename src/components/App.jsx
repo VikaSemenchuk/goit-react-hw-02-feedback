@@ -17,46 +17,30 @@ export class App extends Component {
     }));
   };
 
-  totalClick(good, neutral, bad) {
-    return good + neutral + bad;
+  countTotalFeedback(array) {
+    return array.reduce((acc, stateEl) => acc + stateEl, 0);
   }
 
-  percentCount(total, good) {
+  countPositiveFeedbackPercentage(total, good) {
     return Math.round((good * 100) / total);
   }
 
   render() {
     const { good, neutral, bad } = this.state;
-    const total = this.totalClick(good, neutral, bad);
-    const percent = this.percentCount(total, good);
+    const total = this.countTotalFeedback(Object.values(this.state));
+    const percent = this.countPositiveFeedbackPercentage(total, good);
 
     return (
       <>
-        <Section title='Please leave your feedback'>
+        <Section title="Please leave your feedback">
           <FeedbackOptions
             options={Object.keys(this.state)}
             handlerClick={this.handlerClick}
           />
-          {/* {console.log('options :>> ', options)} */}
         </Section>
 
         {total > 0 ? (
           <Section title="Statistics">
-            {/* <h2
-              style={{
-                // height: '50px',
-                // display: 'flex',
-                // justifyContent: 'center',
-                // alignItems: 'center',
-                paddingLeft: '10px',
-                marginBottom: '10px',
-
-                fontSize: 40,
-                color: '#05509b',
-              }}
-            >
-              Statistics
-            </h2> */}
             <Statistics
               good={good}
               neutral={neutral}
@@ -64,32 +48,13 @@ export class App extends Component {
               total={total}
               percent={percent}
             />
-            {/* <div>good: {good}</div>
-            <div>neutral: {neutral}</div>
-            <div>bad: {bad}</div>
-            <div>total: {total}</div>
-            <div>percent: {this.percent}%</div> */}
           </Section>
         ) : (
           <Section>
-            <Notification message="There is no feedback"/>
-
-            {/* {console.log('options >> ', Object.keys(this.state))} */}
+            <Notification message="There is no feedback" />
           </Section>
         )}
       </>
-      // <div
-      //   style={{
-      //     height: '100vh',
-      //     display: 'flex',
-      //     justifyContent: 'center',
-      //     alignItems: 'center',
-      //     fontSize: 40,
-      //     color: '#010101'
-      //   }}
-      // >
-      //   React homework template
-      // </div>
     );
   }
 }
